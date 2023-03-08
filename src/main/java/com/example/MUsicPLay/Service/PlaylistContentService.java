@@ -1,0 +1,32 @@
+package com.example.MUsicPLay.Service;
+
+import com.example.MUsicPLay.Model.PlaylistContent;
+import com.example.MUsicPLay.Repository.PlaylistContentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class PlaylistContentService {
+    @Autowired
+    private PlaylistContentRepository playlistContentRepository;
+    public List<PlaylistContent> getAllPlaylistContent() {
+        return playlistContentRepository.findAll();
+    }
+    public PlaylistContent getPlaylistContentById(Long id) {
+        return playlistContentRepository.findById(id).orElse(null);
+    }
+    public PlaylistContent addPlaylistContent(PlaylistContent user) {
+        return playlistContentRepository.save(user);
+    }
+    public PlaylistContent updatePlaylistContent(PlaylistContent user) {
+        PlaylistContent existingUser = playlistContentRepository.findById(user.getPlaylist_content_id()).orElse(null);
+        if (existingUser == null) {
+            return null;
+        }
+        return playlistContentRepository.save(user);
+    }
+    public void deletePlaylistContent(Long id) {
+        playlistContentRepository.deleteById(id);
+    }
+}
