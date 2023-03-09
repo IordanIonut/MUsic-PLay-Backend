@@ -1,18 +1,15 @@
 package com.example.MUsicPLay.Service;
 
 import com.example.MUsicPLay.Model.Content;
-import com.example.MUsicPLay.Model.User;
 import com.example.MUsicPLay.Repository.ContentRepository;
-import com.example.MUsicPLay.Repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ContentService {
@@ -21,8 +18,8 @@ public class ContentService {
     public Content getLatestContent() {
         return contentRepository.findLatest();
     }
-    public Optional<Content> getContentByDescriptionAndMoodAndType(JsonNode description, String mood, String type) {
-        return contentRepository.findByDescriptionAndMoodAndType(description, mood, type);
+    public Long findLatestByDescriptionAndMoodAndType(String keyword, String mood, String type) {
+        return contentRepository.findLatestByDescriptionAndMoodAndType(keyword, mood, type);
     }
     public List<Content> getAllContent() {
         return contentRepository.findAll();

@@ -24,15 +24,9 @@ public class Content {
     private String mood;
     @Column(name = "date")
     private LocalDateTime date;
-    @Column(name = "description",  length = 10000)
+    @Column(name = "description", length = 10000)
     @Convert(converter = JsonNodeConverter.class)
     private JsonNode description;
     @Column(name = "type")
     private String type;
-
-    public Content(JsonNode description, String mood, String type) {
-        this.mood = mood;
-        this.description = description;
-        this.type = type;
-    }
 }

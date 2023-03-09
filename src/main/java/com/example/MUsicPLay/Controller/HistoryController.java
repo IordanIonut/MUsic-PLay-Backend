@@ -19,10 +19,9 @@ import java.util.List;
 public class HistoryController {
     @Autowired
     private HistoryService historyService;
-    @PostMapping("/history/history")
-    public ResponseEntity<History> addOrUpdateHistory(@RequestParam User userId, @RequestParam JsonNode description, @RequestParam String mood, @RequestParam String type) {
-        History history = historyService.addOrUpdateHistory(userId, description, mood, type);
-        return ResponseEntity.ok(history);
+    @GetMapping("/history/search")
+    public History getLatestContent(@RequestParam Long user_id, @RequestParam Long content_id) {
+        return historyService.findByUserAndContent(user_id, content_id);
     }
     @GetMapping("/history/all")
     public List<History> getAllHistory() {

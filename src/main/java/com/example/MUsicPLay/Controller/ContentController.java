@@ -1,14 +1,13 @@
 package com.example.MUsicPLay.Controller;
 
-import java.util.Optional;
 import com.example.MUsicPLay.Model.Content;
 import com.example.MUsicPLay.Service.ContentService;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 @CrossOrigin
@@ -25,14 +24,9 @@ public class ContentController {
         }
         return ResponseEntity.ok(entity);
     }
-    @GetMapping("/content/content")
-    public ResponseEntity<Content> getContentByDescriptionAndMoodAndType(@RequestParam JsonNode description, @RequestParam String mood, @RequestParam String type) {
-        Optional<Content> content = contentService.getContentByDescriptionAndMoodAndType(description, mood, type);
-        if (content.isPresent()) {
-            return ResponseEntity.ok(content.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/content/search")
+    public Long getLatestContent(@RequestParam String keyword, @RequestParam String mood, @RequestParam String type) {
+        return contentService.findLatestByDescriptionAndMoodAndType(keyword, mood, type);
     }
     @GetMapping("/content/all")
     public List<Content> getAllContent() {

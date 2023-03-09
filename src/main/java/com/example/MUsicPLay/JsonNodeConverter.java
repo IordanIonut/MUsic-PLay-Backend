@@ -9,9 +9,7 @@ import java.io.IOException;
 
 @Converter
 public class JsonNodeConverter implements AttributeConverter<JsonNode, String> {
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
     @Override
     public String convertToDatabaseColumn(JsonNode attribute) {
         try {
