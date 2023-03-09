@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -19,10 +20,17 @@ import java.util.List;
 public class HistoryController {
     @Autowired
     private HistoryService historyService;
-    @PostMapping("/history/history")
-    public ResponseEntity<History> addOrUpdateHistory(@RequestParam User userId, @RequestParam JsonNode description, @RequestParam String mood, @RequestParam String type) {
-        History history = historyService.addOrUpdateHistory(userId, description, mood, type);
-        return ResponseEntity.ok(history);
+    @PostMapping("history/save")
+    public History insertOrUpdateHistory(@RequestParam Long userId, @RequestParam String mode, @RequestParam String type, @RequestParam String description) {
+      return  historyService.insertOrUpdateHistory(userId, mode, type, description);
+    }
+    @GetMapping("/history/search")
+    public History getLatestContent(@RequestParam Long user_id, @RequestParam Long content_id) {
+        return historyService.findByUserAndContent(user_id, content_id);
+    }
+    @GetMapping("/history/search/all")
+    public List<History> findAllCollomFromContentAndHistoryOrderByDate(@RequestParam Long user_id, @RequestParam String mood, @RequestParam String type) {
+        return historyService.findAllCollomFromContentAndHistoryOrderByDate(user_id, mood, type);
     }
     @GetMapping("/history/all")
     public List<History> getAllHistory() {
