@@ -2,17 +2,12 @@ package com.example.MUsicPLay.Controller;
 
 import com.example.MUsicPLay.Model.Content;
 import com.example.MUsicPLay.Model.History;
-import com.example.MUsicPLay.Model.User;
-import com.example.MUsicPLay.Service.ContentService;
 import com.example.MUsicPLay.Service.HistoryService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -20,13 +15,17 @@ import java.util.Map;
 public class HistoryController {
     @Autowired
     private HistoryService historyService;
+    @GetMapping("history/unused-content")
+    public List<Object[]> findContentNotUsed() {
+        return historyService.findContentNotUsed();
+    }
     @PostMapping("history/save")
     public History insertOrUpdateHistory(@RequestParam Long userId, @RequestParam String mode, @RequestParam String type, @RequestParam String description) {
       return  historyService.insertOrUpdateHistory(userId, mode, type, description);
     }
     @GetMapping("/history/search")
     public History getLatestContent(@RequestParam Long user_id, @RequestParam Long content_id) {
-        return historyService.findByUserAndContent(user_id, content_id);
+        return historyService.findHistoryByUserAndContent(user_id, content_id);
     }
     @GetMapping("/history/search/all")
     public List<History> findAllCollomFromContentAndHistoryOrderByDate(@RequestParam Long user_id, @RequestParam String mood, @RequestParam String type) {

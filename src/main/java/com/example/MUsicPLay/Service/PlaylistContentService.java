@@ -1,5 +1,6 @@
 package com.example.MUsicPLay.Service;
 
+import com.example.MUsicPLay.Model.PlayList;
 import com.example.MUsicPLay.Model.PlaylistContent;
 import com.example.MUsicPLay.Repository.PlaylistContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,18 @@ import java.util.List;
 public class PlaylistContentService {
     @Autowired
     private PlaylistContentRepository playlistContentRepository;
+    public List<PlaylistContent> findByPlaylistId(Long playlist_content_id) {
+        return playlistContentRepository.findByPlaylistId(playlist_content_id);
+    }
+    public List<Object[]> getAllByMood(String mood, Long user_id) {
+        return playlistContentRepository.getAllByMood(mood, user_id);
+    }
+    public List<PlaylistContent> getPlaylistContentById(String mood, String name, Long user_id, Long playlist_id) {
+        return playlistContentRepository.getPlaylistContentById(mood, name, user_id, playlist_id);
+    }
+    public List<PlaylistContent> getPlaylistContentById2(String mood, String name, Long user_id, Long playlist_id) {
+        return playlistContentRepository.getPlaylistContentById2(mood, name, user_id, playlist_id);
+    }
     public List<PlaylistContent> getAllPlaylistContent() {
         return playlistContentRepository.findAll();
     }

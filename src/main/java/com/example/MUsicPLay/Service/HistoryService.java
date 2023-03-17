@@ -4,13 +4,15 @@ import com.example.MUsicPLay.Model.Content;
 import com.example.MUsicPLay.Model.History;
 import com.example.MUsicPLay.Model.User;
 import com.example.MUsicPLay.Repository.ContentRepository;
+import com.example.MUsicPLay.Repository.FavoriteRepository;
 import com.example.MUsicPLay.Repository.HistoryRepository;
-import com.example.MUsicPLay.Repository.UserRepository;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.MUsicPLay.Repository.PlaylistContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HistoryService {
@@ -18,14 +20,29 @@ public class HistoryService {
     private HistoryRepository historyRepository;
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+    public List<Object[]> findContentNotUsed() {
+        List<Object[]> content1 = historyRepository.findContentNotUsed();
+        for(int i=0; i<content1.size(); i++){
+            BigInteger bigIntValue = (BigInteger) content1.get(i)[0];
+            Long longValue = Long.valueOf(bigIntValue.longValue());
+            contentRepository.deleteById(longValue);
+        }
+        return historyRepository.findContentNotUsed();
+    }
     public History insertOrUpdateHistory(Long userId, String mode, String type, String description) {
         User user = new User();
         user.setUser_id(userId);
         List<Content> contentList = contentRepository.findLatestByDescriptionAndMoodAndType(description, mode, type);
+        List<History> historiesToDelete = historyRepository.deleteHistoryByIdPageAndUserId(user.getUser_id(), description);
+        for(History history : historiesToDelete){
+            historyRepository.delete(history);
+        }
         History history = null;
         if (contentList.size() > 0) {
             Content content = contentList.get(contentList.size() - 1);
-            history = historyRepository.findByUserAndContent(user.getUser_id(), content.getContent_id());
+            history = historyRepository.findHistoryByUserAndContent(user.getUser_id(), content.getContent_id());
         }
         if (history == null) {
             history = new History();
@@ -38,8 +55,8 @@ public class HistoryService {
             return historyRepository.save(history);
         }
     }
-    public History findByUserAndContent(Long user_id, Long content_id) {
-        return historyRepository.findByUserAndContent(user_id, content_id);
+    public History findHistoryByUserAndContent(Long user_id, Long content_id) {
+        return historyRepository.findHistoryByUserAndContent(user_id, content_id);
     }
     public List<History> findAllCollomFromContentAndHistoryOrderByDate(Long user_id, String mood, String type) {
         return historyRepository.findAllCollomFromContentAndHistoryOrderByDate(user_id, mood, type);

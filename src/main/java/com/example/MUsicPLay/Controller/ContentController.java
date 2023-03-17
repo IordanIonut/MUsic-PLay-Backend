@@ -28,6 +28,10 @@ public class ContentController {
     public  List<Content> getLatestContent(@RequestParam String keyword, @RequestParam String mood, @RequestParam String type) {
         return contentService.findLatestByDescriptionAndMoodAndType(keyword, mood, type);
     }
+    @GetMapping("/content/idPage")
+    public  List<Content> getyIdPage(@RequestParam String id_page) {
+        return contentService.findByIdPage(id_page);
+    }
     @GetMapping("/content/all")
     public List<Content> getAllContent() {
         return contentService.getAllContent();

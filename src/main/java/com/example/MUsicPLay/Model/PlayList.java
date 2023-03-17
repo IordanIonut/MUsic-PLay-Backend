@@ -22,6 +22,8 @@ public class PlayList {
     private String fill;
     @Column(name = "name")
     private String name;
+    @Column(name = "mood")
+    private String mood;
     public PlayList(){
     }
 }

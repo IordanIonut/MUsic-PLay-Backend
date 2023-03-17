@@ -6,19 +6,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -43,6 +36,30 @@ public class UserService {
     }
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+    public void updateName(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getUser_id());
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setName(user.getName());
+            userRepository.save(existingUser);
+        }
+    }
+    public void updateEmail(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getUser_id());
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setEmail(user.getEmail());
+            userRepository.save(existingUser);
+        }
+    }
+    public void updateFill(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getUser_id());
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setFill(user.getFill());
+            userRepository.save(existingUser);
+        }
     }
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
@@ -70,5 +87,14 @@ public class UserService {
     }
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void updatePassword(Long userId, String newPassword) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
+            user.get().setPassword(encryptedPassword);
+            userRepository.save(user.get());
+        }
     }
 }

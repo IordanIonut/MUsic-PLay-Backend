@@ -1,6 +1,7 @@
 package com.example.MUsicPLay.Service;
 
 import com.example.MUsicPLay.Model.Favorite;
+import com.example.MUsicPLay.Model.User;
 import com.example.MUsicPLay.Repository.FavoriteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,17 @@ import java.util.List;
 public class FavoriteService {
     @Autowired
     private FavoriteRepository favoriteRepository;
+    public  List<Favorite> findHistory(Long userId, String type, String mood) {
+        return favoriteRepository.findHistory(userId, type, mood);
+    }
+    public List<Favorite>  findByUserIdAndIdPage(Long  userId, String idPage) {
+      return favoriteRepository.findByUserIdAndIdPage(userId, idPage);
+    }
     public List<Favorite> getAllFavorite() {
         return favoriteRepository.findAll();
+    }
+    public List<Favorite> findFavoriteByFavoriteID(Long user_id) {
+        return favoriteRepository.findFavoriteByFavoriteID(user_id);
     }
     public Favorite getFavoriteById(Long id) {
         return favoriteRepository.findById(id).orElse(null);

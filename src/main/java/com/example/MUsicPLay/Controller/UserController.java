@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.MUsicPLay.Configure.JwtUtil;
 import com.example.MUsicPLay.Configure.LoginRequest;
 import com.example.MUsicPLay.Configure.LoginResponse;
+import com.example.MUsicPLay.Configure.UpdatePasswordRequest;
 import com.example.MUsicPLay.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.MUsicPLay.Model.User;
@@ -82,8 +83,45 @@ public class UserController {
     public User updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
+    @PutMapping("/users/name/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+        user.setUser_id(id);
+        userService.updateName(user);
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/users/email/{id}")
+    public ResponseEntity<?> updateEmail(@PathVariable("id") Long id, @RequestBody User user) {
+        user.setUser_id(id);
+        userService.updateEmail(user);
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/users/fill/{id}")
+    public ResponseEntity<?> updateFill(@PathVariable("id") Long id, @RequestBody User user) {
+        user.setUser_id(id);
+        userService.updateFill(user);
+        return ResponseEntity.ok().build();
+    }
     @DeleteMapping("/users/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+    }
+    @PutMapping("/users/{userId}/update-password")
+    public ResponseEntity<String> updatePassword(@PathVariable Long userId, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        Optional<User> user = Optional.ofNullable(userService.getUserById(userId));
+        if (user.isPresent()) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.get().getPassword())) {
+                if (updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getConfirmNewPassword())) {
+                    userService.updatePassword(userId, updatePasswordRequest.getNewPassword());
+                    return ResponseEntity.ok("Password updated successfully!");
+                } else {
+                    return ResponseEntity.badRequest().body("New password and confirm password do not match!");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Old password is incorrect!");
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

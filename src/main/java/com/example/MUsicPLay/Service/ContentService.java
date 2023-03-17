@@ -21,6 +21,9 @@ public class ContentService {
     public  List<Content> findLatestByDescriptionAndMoodAndType(String keyword, String mood, String type) {
         return contentRepository.findLatestByDescriptionAndMoodAndType(keyword, mood, type);
     }
+    public  List<Content> findByIdPage(String id_page) {
+        return contentRepository.findByIdPage(id_page);
+    }
     public List<Content> getAllContent() {
         return contentRepository.findAll();
     }

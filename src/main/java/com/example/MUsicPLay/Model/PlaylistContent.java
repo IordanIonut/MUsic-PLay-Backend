@@ -22,7 +22,10 @@ public class PlaylistContent {
     @ManyToOne
     @JoinColumn(name = "playlist_id",referencedColumnName = "playlist_id")
     private PlayList playlist_id;
-    public PlaylistContent(){
-
+    public PlaylistContent(Content content_id, PlayList playlist_id){
+        this.content_id = content_id;
+        this.playlist_id = playlist_id;
+    }
+    public PlaylistContent() {
     }
 }

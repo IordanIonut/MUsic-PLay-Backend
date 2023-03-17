@@ -29,6 +29,7 @@ public class User {
     @NotBlank(message = "The password is mandatory!")
     @Pattern(regexp = "^(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.*[a-zA-Z]).{8,}$", message = "The password must contain at least one digit and a special character (!,@,#,$,%,&,*,(,),-_,+={},[],|,;,:,\\\",',,,.,/ or ?) and have at least 8 characters!")
     @Column(name = "password")
+    @Size(min = 8, message = "The password needs to have minimum 8 characters!")
     private String password;
     @NotBlank(message = "Email address is mandatory!")
     @Email(message = "The email address is invalid!")
