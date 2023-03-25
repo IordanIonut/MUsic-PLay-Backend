@@ -42,6 +42,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             existingUser.setName(user.getName());
+            existingUser.setImage(user.getImage());
             userRepository.save(existingUser);
         }
     }
