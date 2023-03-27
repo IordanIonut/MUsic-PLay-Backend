@@ -89,7 +89,6 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
     public void updatePassword(Long userId, String newPassword) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {

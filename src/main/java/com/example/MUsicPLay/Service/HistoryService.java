@@ -58,8 +58,8 @@ public class HistoryService {
     public History findHistoryByUserAndContent(Long user_id, Long content_id) {
         return historyRepository.findHistoryByUserAndContent(user_id, content_id);
     }
-    public List<History> findAllCollomFromContentAndHistoryOrderByDate(Long user_id, String mood, String type) {
-        return historyRepository.findAllCollomFromContentAndHistoryOrderByDate(user_id, mood, type);
+    public List<History> findAllCollomFromContentAndHistoryOrderByDate(Long user_id, String type) {
+        return historyRepository.findAllCollomFromContentAndHistoryOrderByDate(user_id, type);
     }
     public List<History> getAllHistory() {
         return historyRepository.findAll();

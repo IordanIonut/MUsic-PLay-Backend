@@ -8,10 +8,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-
-    public static final long EXPIRATION_TIME = 864000000; // 10 days
+    public static final long EXPIRATION_TIME = 864000000;
     public static final String SECRET = "mySecretKey";
-
     public String generateToken(Long userId) {
         Date now = new Date();
         return JWT.create()

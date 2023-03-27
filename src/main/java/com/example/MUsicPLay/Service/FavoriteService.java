@@ -11,8 +11,11 @@ import java.util.List;
 public class FavoriteService {
     @Autowired
     private FavoriteRepository favoriteRepository;
-    public  List<Favorite> findHistory(Long userId, String type, String mood) {
-        return favoriteRepository.findHistory(userId, type, mood);
+    public  List<Favorite> findHistory(Long userId, String type) {
+        return favoriteRepository.findHistory(userId, type);
+    }
+    public  List<Favorite> findAllFavoriteByFavoriteID(Long userId) {
+        return favoriteRepository.findAllFavoriteByFavoriteID(userId);
     }
     public List<Favorite>  findByUserIdAndIdPage(Long  userId, String idPage) {
       return favoriteRepository.findByUserIdAndIdPage(userId, idPage);

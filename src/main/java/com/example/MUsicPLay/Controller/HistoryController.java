@@ -28,8 +28,8 @@ public class HistoryController {
         return historyService.findHistoryByUserAndContent(user_id, content_id);
     }
     @GetMapping("/history/search/all")
-    public List<History> findAllCollomFromContentAndHistoryOrderByDate(@RequestParam Long user_id, @RequestParam String mood, @RequestParam String type) {
-        return historyService.findAllCollomFromContentAndHistoryOrderByDate(user_id, mood, type);
+    public List<History> findAllCollomFromContentAndHistoryOrderByDate(@RequestParam Long user_id, @RequestParam String type) {
+        return historyService.findAllCollomFromContentAndHistoryOrderByDate(user_id, type);
     }
     @GetMapping("/history/all")
     public List<History> getAllHistory() {

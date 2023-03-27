@@ -18,8 +18,8 @@ public class FavoriteController {
     @Autowired
     private FavoriteService favoriteService;
     @GetMapping("/favorite/search")
-    public List<Favorite> getFavoriteHistory(@RequestParam Long userId, @RequestParam String type, @RequestParam String mood) {
-        return favoriteService.findHistory(userId, type, mood);
+    public List<Favorite> getFavoriteHistory(@RequestParam Long userId, @RequestParam String type) {
+        return favoriteService.findHistory(userId, type);
     }
     @GetMapping("/favorite/delete/search")
     public List<Favorite>  deleteFavorite(@RequestParam Long  userId, @RequestParam String idPage) {
@@ -36,6 +36,10 @@ public class FavoriteController {
     @GetMapping("/favorite/all/user_id")
     public List<Favorite> findFavoriteByFavoriteID(@RequestParam Long user_id) {
         return favoriteService.findFavoriteByFavoriteID(user_id);
+    }
+    @GetMapping("/favorite/all/user_id/1")
+    public List<Favorite> findAllFavoriteByFavoriteID(@RequestParam Long user_id) {
+        return favoriteService.findAllFavoriteByFavoriteID(user_id);
     }
     @GetMapping("/favorite/get/{id}")
     public Favorite getFavoriteById(@PathVariable Long id) {

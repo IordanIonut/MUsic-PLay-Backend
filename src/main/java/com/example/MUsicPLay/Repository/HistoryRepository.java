@@ -18,8 +18,8 @@ public interface HistoryRepository extends JpaRepository<History,Long> {
 
     @Query(value = "SELECT a.history_id, a.user_id, b.content_id, b.date, b.description, b.mood, b.type , b.id_page " +
             "FROM history  a inner  join content  b on a.content_id = b.content_id" +
-            "    where a.user_id = :user_id AND b.mood = :mood AND b.type = :type order by history_id desc", nativeQuery = true)
-    List<History> findAllCollomFromContentAndHistoryOrderByDate(@Param("user_id") Long user_id, @Param("mood") String mood, @Param("type") String type);
+            "    where a.user_id = :user_id  AND b.type = :type order by date desc", nativeQuery = true)
+    List<History> findAllCollomFromContentAndHistoryOrderByDate(@Param("user_id") Long user_id, @Param("type") String type);
 
     @Query(value = "SELECT c.* FROM content c WHERE NOT EXISTS (" +
             "SELECT 1 FROM history h WHERE h.content_id = c.content_id UNION " +
