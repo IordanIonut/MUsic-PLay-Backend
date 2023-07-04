@@ -21,7 +21,7 @@ public class HistoryController {
     }
     @PostMapping("history/save")
     public History insertOrUpdateHistory(@RequestParam Long userId, @RequestParam String mode, @RequestParam String type, @RequestParam String description) {
-      return  historyService.insertOrUpdateHistory(userId, mode, type, description);
+      return historyService.insertOrUpdateHistory(userId, mode, type, description);
     }
     @GetMapping("/history/search")
     public History getLatestContent(@RequestParam Long user_id, @RequestParam Long content_id) {
@@ -51,5 +51,13 @@ public class HistoryController {
     @DeleteMapping("/history/delete/{id}")
     public void deleteHistory(@PathVariable Long id) {
         historyService.deleteHistory(id);
+    }
+    @GetMapping("/history/last")
+    public History selectLastHistory(@RequestParam Long user_id) {
+        return historyService.selectLastHistory(user_id);
+    }
+    @GetMapping("/history/procent")
+    public Object[] selectProcent(@RequestParam Long user_id){
+        return historyService.selectProcent(user_id);
     }
 }

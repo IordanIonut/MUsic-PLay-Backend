@@ -42,4 +42,21 @@ public class EmailService {
         messageHelper.addInline("logo", new ByteArrayResource(imageBytes), "image/jpeg");
         emailSender.send(mimeMessage);
     }
+    public void sendEmailChangePassword(String email, String code) throws MessagingException, IOException {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+        messageHelper.setTo(email);
+        messageHelper.setSubject("Change password MUsicPLay");
+        messageHelper.setFrom("MUsicPLay@support.com");
+        Context context = new Context();
+        context.setVariable("code", code);
+        context.setVariable("email", email);
+        String emailContent = templateEngine.process("reset-template.html", context);
+        messageHelper.setText(emailContent, true);
+        ClassPathResource resource = new ClassPathResource("static/images/Logo.jpg");
+        byte[] imageBytes = IOUtils.toByteArray(resource.getInputStream());
+
+        messageHelper.addInline("logo", new ByteArrayResource(imageBytes), "image/jpeg");
+        emailSender.send(mimeMessage);
+    }
 }

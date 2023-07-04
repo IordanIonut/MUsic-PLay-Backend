@@ -19,16 +19,16 @@ public class PlaylistContentController {
     @Autowired
     private PlaylistContentService playlistContentService;
     @GetMapping("/playlistContent/mood/user_id")
-    public List<Object[]> getAllByMood(@RequestParam String mood, @RequestParam Long user_id) {
-        return playlistContentService.getAllByMood(mood, user_id);
+    public List<Object[]> getAllByMood(@RequestParam Long user_id) {
+        return playlistContentService.getAllByMood(user_id);
     }
     @GetMapping("/playlistContent/mood/name/user_id/playlist_id")
-    public List<PlaylistContent> getPlaylistContentById(@RequestParam String mood, @RequestParam String name, @RequestParam Long user_id, @RequestParam Long playlist_id) {
-        return playlistContentService.getPlaylistContentById(mood, name, user_id, playlist_id);
+    public List<PlaylistContent> getPlaylistContentById(@RequestParam String name, @RequestParam Long user_id, @RequestParam Long playlist_id) {
+        return playlistContentService.getPlaylistContentById(name, user_id, playlist_id);
     }
     @GetMapping("/playlistContent/mood/name/user_id/playlist_id2")
-    public List<PlaylistContent> getPlaylistContentById2(@RequestParam String mood, @RequestParam String name, @RequestParam Long user_id, @RequestParam Long playlist_id) {
-        return playlistContentService.getPlaylistContentById2(mood, name, user_id, playlist_id);
+    public List<PlaylistContent> getPlaylistContentById2(@RequestParam String name, @RequestParam Long user_id, @RequestParam Long playlist_id) {
+        return playlistContentService.getPlaylistContentById2(name, user_id, playlist_id);
     }
     @GetMapping("/playlistContent/all")
     public List<PlaylistContent> getAllPlaylistContent() {

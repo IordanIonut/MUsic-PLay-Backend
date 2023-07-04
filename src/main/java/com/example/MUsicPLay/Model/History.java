@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -21,4 +20,6 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "content_id",referencedColumnName = "content_id")
     private Content content_id;
+    public History() {
+    }
 }

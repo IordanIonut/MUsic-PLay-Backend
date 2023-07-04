@@ -25,6 +25,7 @@ import static com.example.MUsicPLay.Configure.JwtUtil.SECRET;
 @RestController
 @RequestMapping("/api")
 public class UserController {
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private UserService userService;
     @Autowired
@@ -32,10 +33,11 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Optional<User> user = userService.findByEmail(loginRequest.getEmail());
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email, please check the email!");
         }
+        System.out.println(loginRequest.getPassword() + " " +  user.get().getPassword());
+        System.out.println((passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())));
         if(passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
             String token = JWT.create()
                     .withSubject(user.get().getEmail())
@@ -46,6 +48,20 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password, please check the password!");
         }
+    }
+    @PostMapping("/users/login/google")
+    public ResponseEntity<?> authenticateUserGoogle(@Valid @RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        Optional<User> user = userService.findByEmail(email);
+        if (!user.isPresent()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email, please check the email!");
+        }
+        String token = JWT.create()
+                .withSubject(user.get().getEmail())
+                .withClaim("userId", user.get().getUser_id())
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SECRET.getBytes()));
+        return ResponseEntity.ok(new LoginResponse(token));
     }
     @GetMapping("/users/token")
     public Long getUserIdFromToken(@RequestParam("token") String token) {
@@ -61,7 +77,6 @@ public class UserController {
             }
             return ResponseEntity.badRequest().body(errors);
         }
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.createUser(user);
         return ResponseEntity.ok().build();
@@ -109,19 +124,18 @@ public class UserController {
     public ResponseEntity<String> updatePassword(@PathVariable Long userId, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
         Optional<User> user = Optional.ofNullable(userService.getUserById(userId));
         if (user.isPresent()) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.get().getPassword())) {
-                if (updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getConfirmNewPassword())) {
-                    userService.updatePassword(userId, updatePasswordRequest.getNewPassword());
-                    return ResponseEntity.ok("Password updated successfully!");
-                } else {
-                    return ResponseEntity.badRequest().body("New password and confirm password do not match!");
-                }
+            if (updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getConfirmNewPassword())) {
+                userService.updatePassword(userId, updatePasswordRequest.getNewPassword(), passwordEncoder);
+                return ResponseEntity.ok("Password updated successfully!");
             } else {
-                return ResponseEntity.badRequest().body("Old password is incorrect!");
+                return ResponseEntity.badRequest().body("New password and confirm password do not match!");
             }
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/users/email")
+    public User selectByEmail(@RequestParam("email") String email){
+        return userService.selectByEmail(email);
     }
 }

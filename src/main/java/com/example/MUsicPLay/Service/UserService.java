@@ -18,6 +18,7 @@ import java.util.Set;
 
 @Service
 public class UserService {
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -89,12 +90,14 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-    public void updatePassword(Long userId, String newPassword) {
+    public void updatePassword(Long userId, String newPassword, BCryptPasswordEncoder passwordEncoder) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
-            user.get().setPassword(encryptedPassword);
+            user.get().setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user.get());
         }
+    }
+    public User selectByEmail(String email){
+        return userRepository.selectByEmail(email);
     }
 }

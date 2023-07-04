@@ -16,8 +16,8 @@ import java.util.List;
 @Repository
 public interface PlayListRepository  extends JpaRepository<PlayList,Long> {
     @Query(value = "SELECT * FROM playlist p inner join playlist_content pc on p.playlist_id = pc.playlist_id inner join content c on pc.content_id = c.content_id\n" +
-            "WHERE p.user_id = :user_id and c.mood = :mood group by p.playlist_id order by p.playlist_id desc", nativeQuery = true)
-    List<PlayList> getAllPlaylistByUser(@Param("user_id") Long user_id, @Param("mood") String mood);
+            "WHERE p.user_id = :user_id group by p.playlist_id order by p.playlist_id desc", nativeQuery = true)
+    List<PlayList> getAllPlaylistByUser(@Param("user_id") Long user_id);
     @Query(value = "SELECT * FROM playlist p INNER JOIN playlist_content c on p.playlist_id = c.playlist_id INNER JOIN content ct " +
             "on c.content_id = ct.content_id where p.user_id = :user_id and ct.id_page= :id_page and ct.mood = :mood ", nativeQuery = true)
     List<PlayList> getAllPlaylistByUserAndIdPage(@Param("user_id") Long user_id, @Param("id_page") String id_page, @Param("mood") String mood);

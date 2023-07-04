@@ -3,10 +3,7 @@ package com.example.MUsicPLay.Controller;
 import com.example.MUsicPLay.Model.EmailDTO;
 import com.example.MUsicPLay.Service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -23,5 +20,9 @@ public class EmailController {
                 emailDTO.getEmail(),
                 emailDTO.getSubject(),
                 emailDTO.getMessage());
+    }
+    @PostMapping("/sendEmail/reset")
+    public void sendEmailChangePassword(@RequestParam("email") String email, @RequestParam("code") String code) throws MessagingException, IOException {
+        emailService.sendEmailChangePassword(email,code);
     }
 }

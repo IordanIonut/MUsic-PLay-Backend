@@ -14,14 +14,14 @@ public class PlaylistContentService {
     public List<PlaylistContent> findByPlaylistId(Long playlist_content_id) {
         return playlistContentRepository.findByPlaylistId(playlist_content_id);
     }
-    public List<Object[]> getAllByMood(String mood, Long user_id) {
-        return playlistContentRepository.getAllByMood(mood, user_id);
+    public List<Object[]> getAllByMood(Long user_id) {
+        return playlistContentRepository.getAllByMood(user_id);
     }
-    public List<PlaylistContent> getPlaylistContentById(String mood, String name, Long user_id, Long playlist_id) {
-        return playlistContentRepository.getPlaylistContentById(mood, name, user_id, playlist_id);
+    public List<PlaylistContent> getPlaylistContentById(String name, Long user_id, Long playlist_id) {
+        return playlistContentRepository.getPlaylistContentById(name, user_id, playlist_id);
     }
-    public List<PlaylistContent> getPlaylistContentById2(String mood, String name, Long user_id, Long playlist_id) {
-        return playlistContentRepository.getPlaylistContentById2(mood, name, user_id, playlist_id);
+    public List<PlaylistContent> getPlaylistContentById2(String name, Long user_id, Long playlist_id) {
+        return playlistContentRepository.getPlaylistContentById2(name, user_id, playlist_id);
     }
     public List<PlaylistContent> getAllPlaylistContent() {
         return playlistContentRepository.findAll();

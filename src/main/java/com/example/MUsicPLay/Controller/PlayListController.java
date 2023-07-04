@@ -34,9 +34,9 @@ public class PlayListController {
     public List<Object[]> getPlayListByPlaylistIdAnAndDelete(@RequestParam Long user_id, @RequestParam String id_page, @RequestParam String mood, @RequestParam Long playlist_id) {
         return playListService.getPlayListByPlaylistIdAnAndDelete(user_id, id_page, mood, playlist_id);
     }
-    @GetMapping("/playList/user_id")
-    public List<PlayList> getAllPlayList(@RequestParam Long user_id, @RequestParam String mood) {
-        return playListService.getAllPlaylistByUser(user_id, mood);
+    @GetMapping("/playList/user_id/1")
+    public List<PlayList> getAllPlaylistByUser(@RequestParam Long user_id) {
+        return playListService.getAllPlaylistByUser(user_id);
     }
     @GetMapping("/playList/get/{id}")
     public PlayList getPlayListById(@PathVariable Long id) {

@@ -36,9 +36,17 @@ public class HistoryService {
         user.setUser_id(userId);
         List<Content> contentList = contentRepository.findLatestByDescriptionAndMoodAndType(description, mode, type);
         List<History> historiesToDelete = historyRepository.deleteHistoryByIdPageAndUserId(user.getUser_id(), description);
+        List<History> selectAllHistoryWithSameIdPage = historyRepository.selectAllHistoryWithSameIdPage(user.getUser_id(), description);
+
         for(History history : historiesToDelete){
             historyRepository.delete(history);
         }
+
+        for(History history : selectAllHistoryWithSameIdPage){
+            historyRepository.delete(history);
+        }
+
+
         History history = null;
         if (contentList.size() > 0) {
             Content content = contentList.get(contentList.size() - 1);
@@ -79,5 +87,11 @@ public class HistoryService {
     }
     public void deleteHistory(Long id) {
         historyRepository.deleteById(id);
+    }
+    public History selectLastHistory(Long user_id){
+        return historyRepository.selectLastHistory(user_id);
+    }
+    public Object[] selectProcent(Long id){
+        return new List[]{historyRepository.selectProcent(id)};
     }
 }

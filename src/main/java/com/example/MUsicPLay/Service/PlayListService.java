@@ -24,8 +24,8 @@ public class PlayListService {
     private PlaylistContentRepository playlistContentRepository;
     @Autowired
     private ContentRepository contentRepository;
-    public List<PlayList> getAllPlaylistByUser(Long user_id, String mood) {
-        return playListRepository.getAllPlaylistByUser(user_id, mood);
+    public List<PlayList> getAllPlaylistByUser(Long user_id) {
+        return playListRepository.getAllPlaylistByUser(user_id);
     }
     public Long getCountByPlaylistContentId(Long playlist_id) {
         return playListRepository.getCountByPlaylistContentId(playlist_id);

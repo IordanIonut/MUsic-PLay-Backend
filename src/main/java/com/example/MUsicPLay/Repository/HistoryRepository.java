@@ -31,5 +31,23 @@ public interface HistoryRepository extends JpaRepository<History,Long> {
             "AND h.user_id = :user_id AND h.history_id NOT IN ( SELECT MAX(history_id) FROM History WHERE user_id = :user_id AND content_id IN ( " +
             "SELECT content_id FROM content WHERE id_page = :id_page))", nativeQuery = true)
     List<History> deleteHistoryByIdPageAndUserId(@Param("user_id")Long user_id, @Param("id_page") String id_page);
+    @Query(value = "SELECT * FROM history where user_id = :user_id order by history_id desc limit 1", nativeQuery = true)
+    History selectLastHistory(@Param("user_id") Long user_id);
+    @Query(value = "SELECT * FROM history as h inner join content as c on h.content_id = c.content_id where h.user_id = :user_id and c.id_page = :description", nativeQuery = true)
+    List<History> selectAllHistoryWithSameIdPage(@Param("user_id") Long user_id, @Param("description") String description);
 
+    @Query(value = "SELECT COUNT(CASE WHEN c.type = 'video' and c.mood = 'youtube' THEN 1 END) AS video_youtube, " +
+            "COUNT(CASE WHEN c.type = 'playlist' and c.mood = 'youtube' THEN 1 END) AS playlist_youtube, " +
+            "COUNT(CASE WHEN c.type = 'channel' and c.mood = 'youtube' THEN 1 END) AS channel_youtube, " +
+            "COUNT(CASE WHEN c.type = 'video' and c.mood = 'spotify' THEN 1 END) AS video_spotify, " +
+            "COUNT(CASE WHEN c.type = 'playlist' and c.mood = 'spotify' THEN 1 END) AS playlist_spotify, " +
+            "COUNT(CASE WHEN c.type = 'channel' and c.mood = 'spotify' THEN 1 END) AS channel_spotify, " +
+            "COUNT(CASE WHEN c.type = 'video' and c.mood = 'appleMusic' THEN 1 END) AS video_appleMusic, " +
+            "COUNT(CASE WHEN c.type = 'playlist' and c.mood = 'appleMusic' THEN 1 END) AS playlist_appleMusic, " +
+            "COUNT(CASE WHEN c.type = 'channel' and c.mood = 'appleMusic' THEN 1 END) AS channel_appleMusic, " +
+            "COUNT(CASE WHEN c.type = 'video' THEN 1 END) AS video, " +
+            "COUNT(CASE WHEN c.type = 'playlist' THEN 1 END) AS playlist, " +
+            "COUNT(CASE WHEN c.type = 'channel' THEN 1 END) AS channel " +
+            "FROM content c INNER JOIN history h ON c.content_id = h.content_id WHERE h.user_id = :user_id", nativeQuery = true)
+    List<Object[]> selectProcent(@Param("user_id") Long user_id);
 }

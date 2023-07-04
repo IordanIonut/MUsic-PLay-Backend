@@ -10,7 +10,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -31,4 +30,6 @@ public class Content {
     private String type;
     @Column(name = "idPage")
     private String idPage;
+    public Content() {
+    }
 }
